@@ -19,7 +19,7 @@ export default async function rateLimiter(req) {
   const clientIp = 
     req.headers['x-forwarded-for'] || 
     req.headers['x-real-ip'] || 
-    req.socket.remoteAddress || 
+    req.socket?.remoteAddress || 
     '127.0.0.1'
   
   const tokenCount = (tokenCache.get(clientIp) || 0) + 1
