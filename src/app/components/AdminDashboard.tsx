@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Line } from "react-chartjs-2";
 import "chart.js/auto";
-import "../../styles/globals.css";
+import "../styles/globals.css";
 
 export default function AdminDashboard() {
   const [password, setPassword] = useState("");
