@@ -1,9 +1,9 @@
 "use client"
 
 import React, { useState } from 'react'
-import ChatBox from '../components/ChatBox'
-import ModelSelector from '../components/ModelSelector'
-import DateTime from '../components/DateTime'
+import ChatBox from './components/ChatBox'
+import ModelSelector from './components/ModelSelector'
+import DateTime from './components/DateTime'
 
 export default function Home() {
   const [darkMode, setDarkMode] = useState(false)
