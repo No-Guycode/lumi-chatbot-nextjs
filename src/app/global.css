@@ -1,0 +1,136 @@
+:root {
+  --bg-color: #eef2f7;
+  --text-color: #333;
+  --container-bg: white;
+  --btn-bg: linear-gradient(90deg, #007BFF, #0056b3);
+  --btn-hover: #0056b3;
+}
+
+.dark-mode {
+  --bg-color: #1e1e1e;
+  --text-color: #f1f1f1;
+  --container-bg: #2c2c2c;
+  --btn-bg: linear-gradient(90deg, #444, #222);
+  --btn-hover: #111;
+}
+
+body {
+  font-family: 'Roboto', Arial, sans-serif;
+  background: var(--bg-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background: linear-gradient(90deg, #007BFF, #0056b3);
+  color: white;
+  text-align: center;
+  padding: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.date-time {
+  text-align: center;
+  font-size: 32px;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background: var(--container-bg);
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  transition: transform 0.3s ease-in-out;
+}
+
+.container:hover {
+  transform: scale(1.02);
+}
+
+.chat-box {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 15px;
+  border-radius: 10px;
+  background-color: var(--container-bg);
+  border: 1px solid #ddd;
+  margin-bottom: 20px;
+}
+
+.input-box {
+  width: 90%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  display: block;
+  margin: 0 auto 10px;
+  transition: border 0.3s ease-in-out;
+  background: var(--container-bg);
+  color: var(--text-color);
+}
+
+.input-box:focus {
+  border-color: #007BFF;
+}
+
+.btn {
+  width: 90%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: var(--btn-bg);
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+  display: block;
+  margin: 0 auto;
+}
+
+.btn:hover {
+  background: var(--btn-hover);
+}
+
+.toggle-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 6px;
+  background: var(--btn-bg);
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
+.toggle-btn:hover {
+  background: var(--btn-hover);
+}
+
+.section {
+  margin-top: 20px;
+  padding: 15px;
+  background: var(--container-bg);
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+footer {
+  text-align: center;
+  padding: 10px;
+  background-color: #333;
+  color: white;
+  font-size: 14px;
+  margin-top: 20px;
+}
