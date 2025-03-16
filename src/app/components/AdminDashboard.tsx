@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Line } from "react-chartjs-2";
 import "chart.js/auto";
+import "../../styles/globals.css";
 
 export default function AdminDashboard() {
   const [password, setPassword] = useState("");
@@ -19,19 +20,16 @@ export default function AdminDashboard() {
 
   if (!isAuthenticated) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen">
-        <h1 className="text-2xl font-bold">Admin Login</h1>
+      <div className="admin-container">
+        <h1 className="admin-title">Admin Login</h1>
         <input
           type="password"
           placeholder="Enter Admin Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="p-2 border rounded mt-2"
+          className="admin-input"
         />
-        <button
-          onClick={handleLogin}
-          className="bg-blue-500 text-white px-4 py-2 mt-2 rounded"
-        >
+        <button onClick={handleLogin} className="admin-button">
           Login
         </button>
       </div>
@@ -39,32 +37,32 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="p-4">
-      <h1 className="text-3xl font-bold">Developer Dashboard</h1>
-      <p className="mt-2">Manage API keys, rate limits, and logs.</p>
+    <div className="admin-container">
+      <h1 className="admin-title">Developer Dashboard</h1>
+      <p>Manage API keys, rate limits, and logs.</p>
       
-      <div className="mt-4">
-        <label className="block">Max Tokens</label>
+      <div className="admin-section">
+        <label>Max Tokens</label>
         <input
           type="number"
           value={maxTokens}
           onChange={(e) => setMaxTokens(e.target.value)}
-          className="p-2 border rounded w-full"
+          className="admin-input"
         />
       </div>
 
-      <div className="mt-4">
-        <label className="block">Rate Limit (requests per minute)</label>
+      <div className="admin-section">
+        <label>Rate Limit (requests per minute)</label>
         <input
           type="number"
           value={rateLimit}
           onChange={(e) => setRateLimit(e.target.value)}
-          className="p-2 border rounded w-full"
+          className="admin-input"
         />
       </div>
       
-      <div className="mt-6">
-        <h2 className="text-xl font-bold">Usage Statistics</h2>
+      <div className="admin-section">
+        <h2>Usage Statistics</h2>
         <Line
           data={{
             labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
@@ -72,8 +70,8 @@ export default function AdminDashboard() {
               {
                 label: "API Usage",
                 data: usageData,
-                borderColor: "#3b82f6",
-                backgroundColor: "rgba(59, 130, 246, 0.2)",
+                borderColor: "#007BFF",
+                backgroundColor: "rgba(0, 123, 255, 0.2)",
               },
             ],
           }}
