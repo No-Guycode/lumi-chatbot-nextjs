@@ -1,58 +1,74 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
 export default function AdminDashboard() {
     const [logs, setLogs] = useState([]);
-    const [settings, setSettings] = useState({ rateLimit: 5, maxTokens: 100, model: "gpt-4" });
-    const [password, setPassword] = useState("");
-    const [auth, setAuth] = useState(false);
+    const [settings, setSettings] = useState({ rateLimit: '', maxTokens: '', modelOptions: '' });
+    const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        fetch("/api/logs")
+        fetch('/api/admin')
             .then(res => res.json())
-            .then(data => setLogs(data.logs));
-        fetch("/api/settings")
-            .then(res => res.json())
-            .then(data => setSettings(data));
+            .then(data => {
+                setLogs(data.logs.logs);
+                setSettings(data.settings);
+            })
+            .catch(err => setError('Failed to load data'));
     }, []);
 
-    const saveSettings = async () => {
-        await fetch("/api/settings", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ ...settings, password }),
+    const handleSaveSettings = async () => {
+        setLoading(true);
+        const res = await fetch('/api/admin', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                password,
+                action: 'update_settings',
+                rateLimit: settings.rateLimit,
+                maxTokens: settings.maxTokens,
+                modelOptions: settings.modelOptions,
+            })
         });
+        setLoading(false);
+        if (!res.ok) setError('Failed to save settings');
     };
 
-    const clearLogs = async () => {
-        await fetch("/api/logs", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ password }) });
-        setLogs([]);
+    const handleClearLogs = async () => {
+        setLoading(true);
+        const res = await fetch('/api/admin', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password, action: 'clear_logs' })
+        });
+        setLoading(false);
+        if (res.ok) setLogs([]);
+        else setError('Failed to clear logs');
     };
-
-    if (!auth) {
-        return (
-            <div className="flex flex-col items-center justify-center h-screen bg-gray-900 text-white">
-                <input type="password" placeholder="Enter Admin Password" className="p-2 border rounded bg-gray-800" onChange={e => setPassword(e.target.value)} />
-                <button className="mt-2 p-2 bg-blue-500 rounded" onClick={() => setAuth(true)}>Login</button>
-            </div>
-        );
-    }
 
     return (
         <div className="p-4 bg-gray-900 text-white min-h-screen">
-            <h1 className="text-2xl font-bold">Admin Dashboard</h1>
-            <div className="mt-4">
-                <h2 className="text-xl">Settings</h2>
-                <label>Rate Limit: <input type="number" value={settings.rateLimit} onChange={e => setSettings({ ...settings, rateLimit: e.target.value })} className="ml-2 p-1 bg-gray-800 border border-gray-600 rounded" /></label>
-                <label className="block mt-2">Max Tokens: <input type="number" value={settings.maxTokens} onChange={e => setSettings({ ...settings, maxTokens: e.target.value })} className="ml-2 p-1 bg-gray-800 border border-gray-600 rounded" /></label>
-                <label className="block mt-2">Model: <input type="text" value={settings.model} onChange={e => setSettings({ ...settings, model: e.target.value })} className="ml-2 p-1 bg-gray-800 border border-gray-600 rounded" /></label>
-                <button className="mt-2 p-2 bg-green-500 rounded" onClick={saveSettings}>Save</button>
+            <h1 className="text-2xl mb-4">Admin Dashboard</h1>
+            <input type="password" placeholder="Admin Password" value={password} onChange={e => setPassword(e.target.value)} className="mb-4 p-2 text-black" />
+            <div className="mb-4">
+                <label>Rate Limit: </label>
+                <input type="number" value={settings.rateLimit} onChange={e => setSettings({ ...settings, rateLimit: e.target.value })} className="p-2 text-black" />
             </div>
-            <div className="mt-4">
-                <h2 className="text-xl">Chat Logs</h2>
-                <div className="h-64 overflow-y-auto bg-gray-800 p-2 border border-gray-600 rounded">
-                    {logs.map((log, index) => <p key={index} className="border-b border-gray-700 p-1">[{log.timestamp}] {log.message}</p>)}
-                </div>
-                <button className="mt-2 p-2 bg-red-500 rounded" onClick={clearLogs}>Clear Logs</button>
+            <div className="mb-4">
+                <label>Max Tokens: </label>
+                <input type="number" value={settings.maxTokens} onChange={e => setSettings({ ...settings, maxTokens: e.target.value })} className="p-2 text-black" />
+            </div>
+            <div className="mb-4">
+                <label>Model Options: </label>
+                <input type="text" value={settings.modelOptions} onChange={e => setSettings({ ...settings, modelOptions: e.target.value })} className="p-2 text-black" />
+            </div>
+            <button onClick={handleSaveSettings} className="bg-blue-500 p-2 rounded">Save</button>
+            <button onClick={handleClearLogs} className="bg-red-500 p-2 rounded ml-2">Clear Logs</button>
+            {loading && <p>Loading...</p>}
+            {error && <p className="text-red-500">{error}</p>}
+            <h2 className="text-xl mt-6">Logs</h2>
+            <div className="overflow-y-auto h-60 border p-2">
+                {logs.map((log, index) => <p key={index}>{log.timestamp}: {log.message}</p>)}
             </div>
         </div>
     );
